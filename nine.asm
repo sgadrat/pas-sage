@@ -1,4 +1,6 @@
 ; Building the project
+;  tools/generate_bg_data.py tilemap assets/dummy_bg.png > game/game_states/bg_data.asm
+;  tools/generate_bg_data.py tiles assets/dummy_bg.png > game/chr_rom_bg.asm
 ;  xa nine.asm -C -o game.nes
 
 ; iNES header

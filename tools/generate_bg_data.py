@@ -2,7 +2,9 @@
 from PIL import Image
 import sys
 
-img = Image.open(sys.argv[1])
+mode = sys.argv[1]
+
+img = Image.open(sys.argv[2])
 #print(img.format, img.size, img.mode)
 width = img.size[0]
 height = img.size[1]
@@ -18,9 +20,50 @@ tiled_height = int(height / 8)
 #		sys.stdout.write(str(img.getpixel((column, row))))
 #	print('')
 
-initial = 0x03
+initial = 0x00
 layout = []
-chr_tiles = []
+chr_tiles = [
+	[
+		'00000000',
+		'00000000',
+		'00000000',
+		'00000000',
+		'00000000',
+		'00000000',
+		'00000000',
+		'00000000',
+	],
+	[
+		'11111111',
+		'11111111',
+		'11111111',
+		'11111111',
+		'11111111',
+		'11111111',
+		'11111111',
+		'11111111',
+	],
+	[
+		'22222222',
+		'22222222',
+		'22222222',
+		'22222222',
+		'22222222',
+		'22222222',
+		'22222222',
+		'22222222',
+	],
+	[
+		'33333333',
+		'33333333',
+		'33333333',
+		'33333333',
+		'33333333',
+		'33333333',
+		'33333333',
+		'33333333',
+	],
+]
 
 tiles = []
 for row in range(int(height / 8)):
@@ -29,7 +72,7 @@ for row in range(int(height / 8)):
 		for y in range(8):
 			line_str = ''
 			for x in range(8):
-				line_str = '%s%d' % (line_str, img.getpixel((column*8+x, row*8+y)))
+				line_str = '%s%d' % (line_str, img.getpixel((column*8+x, row*8+y)) % 4)
 			tile.append(line_str)
 
 		index = None
@@ -42,7 +85,7 @@ for row in range(int(height / 8)):
 		layout.append(index)
 
 # Print chr_data
-if True:
+if mode == 'tiles':
 	for lines in chr_tiles:
 		print('; TILE ${:02x}'.format(chr_tiles.index(lines) + initial))
 
@@ -65,8 +108,16 @@ if True:
 				sys.stdout.write(', ')
 		sys.stdout.write('\n')
 
+	print('')
+	print('#if $2000-* < 0')
+	print('#echo *** Error: VRAM bank2 data occupies too much space')
+	print('#else')
+	print('.dsb $2000-*, 0')
+	print('#endif')
+
 # Print game data layout
-if False:
+if mode == 'tilemap':
+	print('bg_data:')
 	for x in range(tiled_width):
 		sys.stdout.write('.byt ')
 		for y in range(tiled_height):
