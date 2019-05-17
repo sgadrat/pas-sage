@@ -397,7 +397,7 @@ sta tmpfield2
 jsr call_pointed_subroutine
 
 ; Enable rendering
-lda #%10010000  ;
+lda #%10010100  ;
 sta ppuctrl_val ; Reactivate NMI
 sta PPUCTRL     ;
 jsr wait_next_frame ; Avoid re-enabling mid-frame
@@ -526,13 +526,13 @@ sta scroll_y
 lda scroll_y
 cmp #240
 bcs set_screen_two
-lda #%10010000
+lda #%10010100
 jmp set_screen
 set_screen_two:
 clc
 adc #240
 sta scroll_y
-lda #%10010010
+lda #%10010110
 set_screen:
 sta ppuctrl_val
 
@@ -544,7 +544,7 @@ bne end
 lda #$00
 sta scroll_y
 sta scroll_x
-lda #%10010000
+lda #%10010100
 sta ppuctrl_val
 
 end:
