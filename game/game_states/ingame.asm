@@ -88,7 +88,7 @@ ingame_init:
 	sta tmpfield14
 	jsr animation_init_state
 
-	lda #PUSH_SCREEN_LINE
+	lda #PUSH_SCREEN_LINE/3
 	sta main_char_anim_state+ANIMATION_STATE_OFFSET_X_LSB
 	lda #$90
 	sta main_char_anim_state+ANIMATION_STATE_OFFSET_Y_LSB
