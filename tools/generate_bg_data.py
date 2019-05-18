@@ -15,6 +15,12 @@ assert width % 8 == 0
 tiled_width = int(width / 8)
 tiled_height = int(height / 8)
 
+assert height % 16 == 0
+assert width % 16 == 0
+
+paletted_width = int(width / 16)
+paletted_height = int(height / 16)
+
 #for row in range(height):
 #	for column in range(width):
 #		sys.stdout.write(str(img.getpixel((column, row))))
@@ -22,6 +28,7 @@ tiled_height = int(height / 8)
 
 initial = 0x00
 layout = []
+palettes = []
 chr_tiles = [
 	[
 		'00000000',
@@ -65,9 +72,12 @@ chr_tiles = [
 	],
 ]
 
-tiles = []
 for row in range(int(height / 8)):
 	for column in range(int(width / 8)):
+		if row % 2 == 0 and column % 2 == 0:
+			palette_num = int(img.getpixel((column*8, row*8)) / 4)
+			palettes.append(palette_num)
+
 		tile = []
 		for y in range(8):
 			line_str = ''
@@ -122,4 +132,17 @@ if mode == 'tilemap':
 		sys.stdout.write('.byt ')
 		for y in range(tiled_height):
 			sys.stdout.write('${:02x}, '.format(layout[x+y*tiled_width] + initial))
+		sys.stdout.write('\n')
+
+if mode == 'palettes':
+	print('bg_palettes:')
+	for x in range(paletted_width):
+		sys.stdout.write('.byt ')
+		upper_value = 0
+		for y in range(paletted_height):
+			current_value = palettes[x+y*paletted_width]
+			if y % 2 == 0:
+				concat_value = upper_value + current_value * 16
+				sys.stdout.write('${:02x}, '.format(concat_value))
+			upper_value = current_value
 		sys.stdout.write('\n')

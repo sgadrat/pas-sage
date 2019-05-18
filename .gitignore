@@ -4,3 +4,4 @@
 *.nl
 game/game_states/bg_data.asm
 game/chr_rom_bg.asm
+game/game_states/bg_palettes.asm

@@ -221,6 +221,8 @@ lda nametable_buffers, x ; Check continuation byte
 beq end_buffers          ;
 inx                      ;
 
+sta PPUCTRL              ; Set mode with continuation byte
+
 lda PPUSTATUS            ; Set PPU destination address
 lda nametable_buffers, x ;
 sta PPUADDR              ;
