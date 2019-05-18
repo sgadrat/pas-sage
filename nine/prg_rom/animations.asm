@@ -75,11 +75,23 @@ animation_init_state:
 	sta (anim_state), y
 	ldy #ANIMATION_STATE_OFFSET_DIRECTION
 	sta (anim_state), y
-	ldy #ANIMATION_STATE_OFFSET_CLOCK
-	sta (anim_state), y
 	ldy #ANIMATION_STATE_OFFSET_FIRST_SPRITE_NUM
 	sta (anim_state), y
 	ldy #ANIMATION_STATE_OFFSET_LAST_SPRITE_NUM
+	sta (anim_state), y
+
+	; Set animation
+	;Fallthrough to animation_change_animation
+.)
+
+animation_change_animation:
+.(
+	anim_state = tmpfield11
+	anim_data = tmpfield13
+
+	; Reset clock
+	lda #0
+	ldy #ANIMATION_STATE_OFFSET_CLOCK
 	sta (anim_state), y
 
 	; Initialize frame vector and data vector to the first frame

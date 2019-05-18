@@ -1,5 +1,6 @@
 #include "game/game_states/bg_data.asm"
 #include "game/game_states/bg_palettes.asm"
+#include "game/game_states/char_states.asm"
 
 palettes_data:
 ; Background
@@ -32,7 +33,11 @@ next_bg_palette = $07
 next_bg_palette_msb = $08
 bg_palettes_mirror = $0400 ; to $0417 - 24 bytes
 
+main_char_state = $09
 main_char_anim_state = $0418 ; to $0423 - 12 bytes
+
+CHAR_STATE_IDLE = 0
+CHAR_STATE_WALK_RIGHT = 1
 
 ; Initialization routine for ingame state
 ingame_init:
@@ -81,7 +86,7 @@ ingame_init:
 	jsr new_tile_column
 	jsr new_palette
 
-	; Initialize main character animation
+	; Initialize main character animation state
 	lda #<main_char_anim_state
 	sta tmpfield11
 	lda #>main_char_anim_state
@@ -95,6 +100,11 @@ ingame_init:
 	lda #$80
 	sta main_char_anim_state+ANIMATION_STATE_OFFSET_X_LSB
 	sta main_char_anim_state+ANIMATION_STATE_OFFSET_Y_LSB
+
+	; Initialize main character state
+	ldx #0
+	sta main_char_state
+	jsr change_char_state
 
 	rts
 .)
@@ -133,6 +143,14 @@ ingame_tick:
 		and #CONTROLLER_BTN_RIGHT
 		beq ok
 
+			; Change char state if we just pressed the button
+			cmp controller_a_last_frame_btns
+			beq end_state_change
+				ldx #CHAR_STATE_WALK_RIGHT
+				sta main_char_state
+				jsr change_char_state
+			end_state_change:
+
 			; Move camera
 			inc camera_x_lsb
 			bne end_inc_camera
@@ -167,6 +185,21 @@ ingame_tick:
 		beq ok
 
 			;TODO
+
+		ok:
+	.)
+
+	; Check no button
+	.(
+		lda controller_a_btns
+		bne ok
+
+			; Change state if we just gone to this config
+			cmp controller_a_last_frame_btns
+			beq ok
+				ldx CHAR_STATE_IDLE
+				sta main_char_state
+				jsr change_char_state
 
 		ok:
 	.)

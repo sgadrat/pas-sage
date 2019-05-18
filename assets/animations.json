@@ -21,23 +21,11 @@
 		]
 	},
 	{
-		"name": "test",
+		"name": "baby_idle",
 		"frames": [
 			{
 				"duration": 8,
 				"file": "anim_dummy/walk_01.gif"
-			},
-			{
-				"duration": 8,
-				"file": "anim_dummy/walk_02.gif"
-			},
-			{
-				"duration": 8,
-				"file": "anim_dummy/walk_03.gif"
-			},
-			{
-				"duration": 8,
-				"file": "anim_dummy/walk_04.gif"
 			}
 		]
 	}
