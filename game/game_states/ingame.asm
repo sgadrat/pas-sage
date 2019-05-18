@@ -21,9 +21,10 @@ bg_palettes_mirror = $0400 ; to $0417 - 24 bytes
 main_char_state = $09
 main_char_anim_state = $0418 ; to $0423 - 12 bytes
 main_char_x = main_char_anim_state+ANIMATION_STATE_OFFSET_X_LSB
+char_state_anim_modifier = $0a
 
-scroll_lock = $0a
-next_event = $0b
+scroll_lock = $0b
+next_event = $0c
 
 CHAR_STATE_IDLE = 0
 CHAR_STATE_WALK_RIGHT = 1
@@ -94,6 +95,8 @@ ingame_init:
 	sta main_char_anim_state+ANIMATION_STATE_OFFSET_LAST_SPRITE_NUM
 
 	; Initialize main character state
+	lda #0
+	sta char_state_anim_modifier
 	ldx #CHAR_STATE_IDLE
 	sta main_char_state
 	jsr change_char_state
@@ -252,6 +255,8 @@ ingame_tick:
 			sta tmpfield1
 			lda events_handler_msb, x
 			sta tmpfield2
+			inx
+			stx next_event
 			jsr call_pointed_subroutine
 
 		end_events:

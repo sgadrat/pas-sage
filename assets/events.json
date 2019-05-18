@@ -1,6 +1,10 @@
 [
 	{
 		"pos": 300,
+		"name": "become_child"
+	},
+	{
+		"pos": 500,
 		"name": "end_scroll"
 	}
 ]
