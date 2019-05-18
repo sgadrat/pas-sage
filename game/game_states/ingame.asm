@@ -157,15 +157,30 @@ ingame_tick:
 			end_state_change:
 
 			; Chose what to do
-			lda main_char_x
-			cmp #PUSH_SCREEN_LINE
-			bne move_char
-				lda scroll_lock
-				bne end_action
+			lda scroll_lock
+			beq no_scroll_lock
+
+				; Scroll lock - the char is permited to leave the screen
+				inc main_char_x
+				bne end_inc_char_x
+					inc main_char_anim_state+ANIMATION_STATE_OFFSET_X_MSB
+				end_inc_char_x:
+
+				;TODO If char leaved the screen, go thanks for playing state
+
+				jmp end_action
+
+			no_scroll_lock:
+
+				; No scroll lock - move the char or push the screen
+				lda main_char_x
+				cmp #PUSH_SCREEN_LINE
+				bne move_char
 					jsr move_screen
 					jmp end_action
-			move_char:
-				inc main_char_x
+				move_char:
+					inc main_char_x
+
 			end_action:
 
 		ok:
