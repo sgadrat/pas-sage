@@ -404,7 +404,7 @@ lda #%10010100  ;
 sta ppuctrl_val ; Reactivate NMI
 sta PPUCTRL     ;
 jsr wait_next_frame ; Avoid re-enabling mid-frame
-lda #%00011110 ; Enable sprites and background rendering
+lda #%00011000 ; Enable sprites and background rendering
 sta PPUMASK    ;
 
 ; Clear stack

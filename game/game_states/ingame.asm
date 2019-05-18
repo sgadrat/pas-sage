@@ -93,6 +93,8 @@ ingame_init:
 	lda #$90
 	sta main_char_anim_state+ANIMATION_STATE_OFFSET_Y_LSB
 	lda #10
+	sta main_char_anim_state+ANIMATION_STATE_OFFSET_FIRST_SPRITE_NUM
+	lda #20
 	sta main_char_anim_state+ANIMATION_STATE_OFFSET_LAST_SPRITE_NUM
 
 	; Initialize main character state
@@ -109,6 +111,37 @@ ingame_init:
 	; Initialize events system
 	lda #0
 	sta next_event
+
+	; Place 10 sprites to hide rightmost screen column
+	ldx #0*4
+	ldy #79
+	place_one_sprite:
+		; Set sprite's Y coord to value in register Y and update register Y
+		tya
+		sta oam_mirror, x
+		inx
+		clc
+		adc #8
+		tay
+
+		; Tile number - solid 1
+		lda #$01
+		sta oam_mirror, x
+		inx
+
+		; Attributes
+		lda #0
+		sta oam_mirror, x
+		inx
+
+		; X coord
+		lda #$f8
+		sta oam_mirror, x
+		inx
+
+		; Loop
+		cpx #10*4
+		bne place_one_sprite
 
 	rts
 .)
