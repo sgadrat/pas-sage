@@ -1,4 +1,6 @@
 ; Building the project
+;  tools/generate_animations.py tiles assets/animations.json > game/chr_rom_sprites.asm
+;  tools/generate_animations.py anims assets/animations.json > game/animations/animations.asm
 ;  tools/generate_bg_data.py tilemap assets/dummy_bg.png > game/game_states/bg_data.asm
 ;  tools/generate_bg_data.py tiles assets/dummy_bg.png > game/chr_rom_bg.asm
 ;  tools/generate_bg_data.py palettes assets/dummy_bg.png > game/game_states/bg_palettes.asm
