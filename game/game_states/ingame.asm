@@ -35,9 +35,14 @@ bg_palettes_mirror = $0400 ; to $0417 - 24 bytes
 
 main_char_state = $09
 main_char_anim_state = $0418 ; to $0423 - 12 bytes
+main_char_x = main_char_anim_state+ANIMATION_STATE_OFFSET_X_LSB
 
 CHAR_STATE_IDLE = 0
 CHAR_STATE_WALK_RIGHT = 1
+CHAR_STATE_IDLE_LEFT = 2
+CHAR_STATE_WALK_LEFT = 3
+
+PUSH_SCREEN_LINE = $60
 
 ; Initialization routine for ingame state
 ingame_init:
@@ -97,12 +102,15 @@ ingame_init:
 	sta tmpfield14
 	jsr animation_init_state
 
-	lda #$80
+	lda #PUSH_SCREEN_LINE
 	sta main_char_anim_state+ANIMATION_STATE_OFFSET_X_LSB
+	lda #$88
 	sta main_char_anim_state+ANIMATION_STATE_OFFSET_Y_LSB
+	lda #10
+	sta main_char_anim_state+ANIMATION_STATE_OFFSET_LAST_SPRITE_NUM
 
 	; Initialize main character state
-	ldx #0
+	ldx #CHAR_STATE_IDLE
 	sta main_char_state
 	jsr change_char_state
 
@@ -115,24 +123,26 @@ ingame_tick:
 	; Reset processed nt buffers
 	jsr reset_nt_buffers
 
-	; Check up button
-	.(
-		lda controller_a_btns
-		and #CONTROLLER_BTN_UP
-		beq ok
-
-			;TODO
-
-		ok:
-	.)
-
 	; Check left button
 	.(
 		lda controller_a_btns
 		and #CONTROLLER_BTN_LEFT
 		beq ok
 
-			;TODO
+			; Change char state if we just pressed the button
+			cmp controller_a_last_frame_btns
+			beq end_state_change
+				ldx #CHAR_STATE_WALK_LEFT
+				stx main_char_state
+				jsr change_char_state
+			end_state_change:
+
+			; Chose what to do
+			lda main_char_x
+			cmp #$10
+			beq end_action
+				dec main_char_x
+			end_action:
 
 		ok:
 	.)
@@ -147,44 +157,19 @@ ingame_tick:
 			cmp controller_a_last_frame_btns
 			beq end_state_change
 				ldx #CHAR_STATE_WALK_RIGHT
-				sta main_char_state
+				stx main_char_state
 				jsr change_char_state
 			end_state_change:
 
-			; Move camera
-			inc camera_x_lsb
-			bne end_inc_camera
-				inc camera_x_msb
-			end_inc_camera:
-
-			; If camera is on a multiple of height, draw the next column
-			lda camera_x_lsb
-			and #%00000111
-			bne end_redraw
-				jsr new_tile_column
-			end_redraw:
-
-			; If camera is on a multiple of 16, set the next column's palette
-			lda camera_x_lsb
-			and #%00001111
-			bne end_palette
-				jsr new_palette
-			end_palette:
-
-			; Update PPU scroll
-			lda camera_x_lsb
-			sta scroll_x
-
-		ok:
-	.)
-
-	; Check down button
-	.(
-		lda controller_a_btns
-		and #CONTROLLER_BTN_DOWN
-		beq ok
-
-			;TODO
+			; Chose what to do
+			lda main_char_x
+			cmp #PUSH_SCREEN_LINE
+			bne move_char
+				jsr move_screen
+				jmp end_action
+			move_char:
+				inc main_char_x
+			end_action:
 
 		ok:
 	.)
@@ -197,8 +182,18 @@ ingame_tick:
 			; Change state if we just gone to this config
 			cmp controller_a_last_frame_btns
 			beq ok
-				ldx CHAR_STATE_IDLE
-				sta main_char_state
+				lda main_char_state
+				cmp #CHAR_STATE_WALK_LEFT
+				beq left
+				cmp #CHAR_STATE_IDLE_LEFT
+				beq left
+					ldx #CHAR_STATE_IDLE
+					jmp direction_chosen
+				left:
+					ldx #CHAR_STATE_IDLE_LEFT
+				direction_chosen:
+
+				stx main_char_state
 				jsr change_char_state
 
 		ok:
@@ -223,6 +218,35 @@ ingame_tick:
 	jsr animation_tick
 
 	rts
+
+	move_screen:
+	.(
+		; Move camera
+		inc camera_x_lsb
+		bne end_inc_camera
+			inc camera_x_msb
+		end_inc_camera:
+
+		; If camera is on a multiple of height, draw the next column
+		lda camera_x_lsb
+		and #%00000111
+		bne end_redraw
+			jsr new_tile_column
+		end_redraw:
+
+		; If camera is on a multiple of 16, set the next column's palette
+		lda camera_x_lsb
+		and #%00001111
+		bne end_palette
+			jsr new_palette
+		end_palette:
+
+		; Update PPU scroll
+		lda camera_x_lsb
+		sta scroll_x
+
+		rts
+	.)
 .)
 
 new_tile_column:
