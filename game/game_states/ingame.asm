@@ -1,6 +1,6 @@
 #include "game/game_states/bg_data.asm"
 #include "game/game_states/bg_palettes.asm"
-#include "game/game_states/char_states.asm"
+#include "game/game_states/events.asm"
 
 palettes_data:
 ; Background
@@ -21,6 +21,9 @@ bg_palettes_mirror = $0400 ; to $0417 - 24 bytes
 main_char_state = $09
 main_char_anim_state = $0418 ; to $0423 - 12 bytes
 main_char_x = main_char_anim_state+ANIMATION_STATE_OFFSET_X_LSB
+
+scroll_lock = $0a
+next_event = $0b
 
 CHAR_STATE_IDLE = 0
 CHAR_STATE_WALK_RIGHT = 1
@@ -95,6 +98,14 @@ ingame_init:
 	sta main_char_state
 	jsr change_char_state
 
+	; No scroll lock at the begining
+	lda #0
+	sta scroll_lock
+
+	; Initialize events system
+	lda #0
+	sta next_event
+
 	rts
 .)
 
@@ -146,8 +157,10 @@ ingame_tick:
 			lda main_char_x
 			cmp #PUSH_SCREEN_LINE
 			bne move_char
-				jsr move_screen
-				jmp end_action
+				lda scroll_lock
+				bne end_action
+					jsr move_screen
+					jmp end_action
 			move_char:
 				inc main_char_x
 			end_action:
@@ -225,6 +238,23 @@ ingame_tick:
 		; Update PPU scroll
 		lda camera_x_lsb
 		sta scroll_x
+
+		; Call scroll event
+		ldx next_event
+		lda events_pos_lsb, x
+		cmp camera_x_lsb
+		bne end_events
+		lda events_pos_msb, x
+		cmp camera_x_msb
+		bne end_events
+
+			lda events_handler_lsb, x
+			sta tmpfield1
+			lda events_handler_msb, x
+			sta tmpfield2
+			jsr call_pointed_subroutine
+
+		end_events:
 
 		rts
 	.)
@@ -432,3 +462,6 @@ new_palette:
 
 	rts
 .)
+
+#include "game/game_states/char_states.asm"
+#include "game/game_states/event_handlers.asm"
