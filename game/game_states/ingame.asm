@@ -8,21 +8,6 @@ palettes_data:
 ; Sprites
 .byt $0d,$0d,$37,$20, $0d,$0d,$0d,$0d, $0d,$0d,$0d,$0d, $0d,$0d,$0d,$0d
 
-nametable_data:
-.byt ZIPNT_ZEROS(32*7)
-.byt ZIPNT_ZEROS(32*7+12)
-.byt                                                                $01, $01, $01, $01,  $01
-.byt ZIPNT_ZEROS(15+12)
-.byt                                                                $01, $01, $01, $01,  $01
-.byt ZIPNT_ZEROS(15+12)
-;    -------------------  -------------------  -------------------  -------------------  -------------------  -------------------  -------------------  -------------------
-.byt                                                                $01, $01, $01, $01,  $01
-.byt ZIPNT_ZEROS(15+32*7)
-.byt ZIPNT_ZEROS(32*6)
-nametable_attributes:
-.byt ZIPNT_ZEROS(8*8)
-.byt ZIPNT_END
-
 camera_x_lsb = $03
 camera_x_msb = $04
 
@@ -63,18 +48,6 @@ ingame_init:
 	cpx #$20
 	bne copy_palette
 
-	; Copy background from PRG-rom to PPU nametable
-	lda #<nametable_data
-	sta tmpfield1
-	lda #>nametable_data
-	sta tmpfield2
-	jsr draw_zipped_nametable
-
-	; Init camera's position
-	lda #$00
-	sta camera_x_lsb
-	sta camera_x_msb
-
 	; Set next_bg_column to to the 1st column
 	lda #<bg_data
 	sta next_bg_column
@@ -86,6 +59,14 @@ ingame_init:
 	sta next_bg_palette
 	lda #>bg_palettes
 	sta next_bg_palette_msb
+
+	; Draw the first screen of columns
+	jsr draw_first_screen
+
+	; Init camera's position
+	lda #$00
+	sta camera_x_lsb
+	sta camera_x_msb
 
 	; Draw first tile and palette collum as we are on pixel 0
 	jsr new_tile_column
@@ -249,6 +230,36 @@ ingame_tick:
 	.)
 .)
 
+draw_first_screen:
+.(
+	; Draw tile and palette columns for the first screen
+	lda #0
+	sta camera_x_lsb
+	draw_one_column:
+		; Draw tile column
+		jsr new_tile_column
+
+		; Draw palettes column if on an even column
+		lda camera_x_lsb
+		and #%00001111
+		bne end_palette
+			jsr new_palette
+		end_palette:
+
+		; Process generated buffers immediatly (we need disabled rendering)
+		jsr process_nt_buffers
+		jsr reset_nt_buffers
+
+		; Loop
+		lda #8
+		clc
+		adc camera_x_lsb
+		sta camera_x_lsb
+		bne draw_one_column
+
+	rts
+.)
+
 new_tile_column:
 .(
 		; NT buffer header
@@ -391,6 +402,7 @@ new_palette:
 	jsr last_nt_buffer
 	lda ppuctrl_val ; Continuation byte (horizontal)
 	and #%11111011
+	ora #%01000000
 	sta nametable_buffers, x
 	inx
 	lda #$23 ; PPU address
