@@ -3,19 +3,19 @@
 		"name": "baby_walk",
 		"frames": [
 			{
-				"duration": 16,
+				"duration": 8,
 				"file": "anim_dummy/walk_01.gif"
 			},
 			{
-				"duration": 16,
+				"duration": 8,
 				"file": "anim_dummy/walk_02.gif"
 			},
 			{
-				"duration": 16,
+				"duration": 8,
 				"file": "anim_dummy/walk_03.gif"
 			},
 			{
-				"duration": 16,
+				"duration": 8,
 				"file": "anim_dummy/walk_04.gif"
 			}
 		]
@@ -24,19 +24,19 @@
 		"name": "test",
 		"frames": [
 			{
-				"duration": 16,
+				"duration": 8,
 				"file": "anim_dummy/walk_01.gif"
 			},
 			{
-				"duration": 16,
+				"duration": 8,
 				"file": "anim_dummy/walk_02.gif"
 			},
 			{
-				"duration": 16,
+				"duration": 8,
 				"file": "anim_dummy/walk_03.gif"
 			},
 			{
-				"duration": 16,
+				"duration": 8,
 				"file": "anim_dummy/walk_04.gif"
 			}
 		]

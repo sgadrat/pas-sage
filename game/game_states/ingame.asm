@@ -5,7 +5,7 @@ palettes_data:
 ; Background
 .byt $0d,$01,$11,$21, $0d,$05,$15,$25, $0d,$01,$07,$10, $0d,$0c,$1c,$2c
 ; Sprites
-.byt $0d,$06,$25,$22, $0d,$0d,$0d,$0d, $0d,$0d,$0d,$0d, $0d,$0d,$0d,$0d
+.byt $0d,$0d,$37,$20, $0d,$0d,$0d,$0d, $0d,$0d,$0d,$0d, $0d,$0d,$0d,$0d
 
 nametable_data:
 .byt ZIPNT_ZEROS(32*7)
@@ -31,6 +31,8 @@ next_bg_column_msb = $06
 next_bg_palette = $07
 next_bg_palette_msb = $08
 bg_palettes_mirror = $0400 ; to $0417 - 24 bytes
+
+main_char_anim_state = $0418 ; to $0423 - 12 bytes
 
 ; Initialization routine for ingame state
 ingame_init:
@@ -78,6 +80,21 @@ ingame_init:
 	; Draw first tile and palette collum as we are on pixel 0
 	jsr new_tile_column
 	jsr new_palette
+
+	; Initialize main character animation
+	lda #<main_char_anim_state
+	sta tmpfield11
+	lda #>main_char_anim_state
+	sta tmpfield12
+	lda #<anim_baby_walk
+	sta tmpfield13
+	lda #>anim_baby_walk
+	sta tmpfield14
+	jsr animation_init_state
+
+	lda #$80
+	sta main_char_anim_state+ANIMATION_STATE_OFFSET_X_LSB
+	sta main_char_anim_state+ANIMATION_STATE_OFFSET_Y_LSB
 
 	rts
 .)
@@ -158,21 +175,19 @@ ingame_tick:
 	; Draw the character
 	;
 
-	;TODO
-	;; Call animation_draw with its parameter
-	;lda #<heart_animation_state ;
-	;sta tmpfield11              ; The animation state to draw
-	;lda #>heart_animation_state ;
-	;sta tmpfield12              ;
-	;lda #0         ;
-	;sta tmpfield13 ;
-	;sta tmpfield14 ; Camera position (let it as 0/0)
-	;sta tmpfield15 ;
-	;sta tmpfield16 ;
-	;jsr animation_draw
+	lda #<main_char_anim_state ;
+	sta tmpfield11             ; The animation state to draw
+	lda #>main_char_anim_state ;
+	sta tmpfield12             ;
+	lda #0         ;
+	sta tmpfield13 ;
+	sta tmpfield14 ; Camera position (let it as 0/0, character is actually placed)
+	sta tmpfield15 ;
+	sta tmpfield16 ;
+	jsr animation_draw
 
-	;; Advance animation one tick
-	;jsr animation_tick
+	; Advance animation one tick
+	jsr animation_tick
 
 	rts
 .)
