@@ -60,6 +60,7 @@ chr_tiles = [
 
 for anim_index in animations_index:
 	anim = Animation(name=anim_index['name'])
+	anchor = anim_index['anchor']
 
 	for frame_index in anim_index['frames']:
 		frame = Frame(duration=frame_index['duration'])
@@ -91,7 +92,7 @@ for anim_index in animations_index:
 					index = len(chr_tiles)
 					chr_tiles.append(tile)
 
-				frame.sprites.append(Sprite(y=row*8, tile='${:02x}'.format(index), attr=0, x=column*8, foreground=False))
+				frame.sprites.append(Sprite(y=row*8-anchor['y'], tile='${:02x}'.format(index), attr=0, x=column*8-anchor['x'], foreground=False))
 
 		anim.frames.append(frame)
 

@@ -1,6 +1,7 @@
 [
 	{
 		"name": "baby_walk",
+		"anchor": {"x": 7, "y": 6},
 		"frames": [
 			{
 				"duration": 8,
@@ -22,6 +23,7 @@
 	},
 	{
 		"name": "baby_idle",
+		"anchor": {"x": 7, "y": 6},
 		"frames": [
 			{
 				"duration": 8,
@@ -31,6 +33,7 @@
 	},
 	{
 		"name": "child_walk",
+		"anchor": {"x": 7, "y": 15},
 		"frames": [
 			{
 				"duration": 8,
@@ -56,6 +59,7 @@
 	},
 	{
 		"name": "child_idle",
+		"anchor": {"x": 7, "y": 15},
 		"frames": [
 			{
 				"duration": 8,
