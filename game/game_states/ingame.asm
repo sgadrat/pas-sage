@@ -32,6 +32,7 @@ CHAR_STATE_IDLE_LEFT = 2
 CHAR_STATE_WALK_LEFT = 3
 
 PUSH_SCREEN_LINE = $60
+GAMEOVER_LINE = $0104
 
 ; Initialization routine for ingame state
 ingame_init:
@@ -166,7 +167,16 @@ ingame_tick:
 					inc main_char_anim_state+ANIMATION_STATE_OFFSET_X_MSB
 				end_inc_char_x:
 
-				;TODO If char leaved the screen, go thanks for playing state
+				; When char leaves the screen, go thanks for playing state
+				lda main_char_x
+				cmp #<GAMEOVER_LINE
+				bne no_gamestate_change
+				lda main_char_anim_state+ANIMATION_STATE_OFFSET_X_MSB
+				cmp #>GAMEOVER_LINE
+				bne no_gamestate_change
+					lda #GAMESTATE_GAMEOVER
+					jsr change_global_game_state
+				no_gamestate_change:
 
 				jmp end_action
 
