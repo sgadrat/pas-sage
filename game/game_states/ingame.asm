@@ -89,7 +89,7 @@ ingame_init:
 
 	lda #PUSH_SCREEN_LINE
 	sta main_char_anim_state+ANIMATION_STATE_OFFSET_X_LSB
-	lda #$88
+	lda #$90
 	sta main_char_anim_state+ANIMATION_STATE_OFFSET_Y_LSB
 	lda #10
 	sta main_char_anim_state+ANIMATION_STATE_OFFSET_LAST_SPRITE_NUM
