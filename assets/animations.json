@@ -1,29 +1,27 @@
 [
 	{
 		"name": "baby_walk",
-		"anchor": {"x": 7, "y": 6},
+		"anchor": {"x": 13, "y": 31},
+		"palette": 0,
 		"frames": [
 			{
 				"duration": 8,
-				"file": "anim_dummy/walk_01.gif"
+				"file": "animation_frames/minis/baby_walk1.gif"
 			},
 			{
 				"duration": 8,
-				"file": "anim_dummy/walk_02.gif"
+				"file": "animation_frames/minis/baby_walk2.gif"
 			},
 			{
 				"duration": 8,
-				"file": "anim_dummy/walk_03.gif"
-			},
-			{
-				"duration": 8,
-				"file": "anim_dummy/walk_04.gif"
+				"file": "animation_frames/minis/baby_walk3.gif"
 			}
 		]
 	},
 	{
 		"name": "baby_idle",
 		"anchor": {"x": 13, "y": 31},
+		"palette": 0,
 		"frames": [
 			{
 				"duration": 8,
@@ -34,6 +32,7 @@
 	{
 		"name": "child_walk",
 		"anchor": {"x": 7, "y": 15},
+		"palette": 0,
 		"frames": [
 			{
 				"duration": 8,
@@ -60,6 +59,7 @@
 	{
 		"name": "child_idle",
 		"anchor": {"x": 7, "y": 15},
+		"palette": 0,
 		"frames": [
 			{
 				"duration": 8,
@@ -70,6 +70,7 @@
 	{
 		"name": "adult_walk",
 		"anchor": {"x": 14, "y": 31},
+		"palette": 1,
 		"frames": [
 			{
 				"duration": 8,
@@ -104,6 +105,7 @@
 	{
 		"name": "adult_idle",
 		"anchor": {"x": 14, "y": 31},
+		"palette": 1,
 		"frames": [
 			{
 				"duration": 8,

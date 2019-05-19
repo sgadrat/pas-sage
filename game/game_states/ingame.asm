@@ -6,7 +6,7 @@ palettes_data:
 ; Background
 .byt $0d,$01,$0a,$1a, $0d,$31,$32,$20, $0d,$01,$07,$10, $0d,$01,$06,$28
 ; Sprites
-.byt $0d,$0d,$37,$20, $0d,$0d,$0d,$0d, $0d,$0d,$0d,$0d, $0d,$0d,$0d,$0d
+.byt $0d,$0d,$37,$20, $0d,$0d,$08,$37, $0d,$0d,$0d,$0d, $0d,$0d,$0d,$0d
 
 camera_x_lsb = $03
 camera_x_msb = $04
@@ -90,7 +90,7 @@ ingame_init:
 
 	lda #PUSH_SCREEN_LINE/3
 	sta main_char_anim_state+ANIMATION_STATE_OFFSET_X_LSB
-	lda #$90
+	lda #$98
 	sta main_char_anim_state+ANIMATION_STATE_OFFSET_Y_LSB
 	lda #10
 	sta main_char_anim_state+ANIMATION_STATE_OFFSET_FIRST_SPRITE_NUM
