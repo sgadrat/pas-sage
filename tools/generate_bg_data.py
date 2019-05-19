@@ -1,10 +1,14 @@
 #!/usr/bin/env python
+import json
 from PIL import Image
 import sys
 
 mode = sys.argv[1]
 
-img = Image.open(sys.argv[2])
+with open(sys.argv[2], 'r') as reserved_tiles_file:
+	reserved_tiles = json.load(reserved_tiles_file)
+
+img = Image.open(sys.argv[3])
 #print(img.format, img.size, img.mode)
 width = img.size[0]
 height = img.size[1]
@@ -29,48 +33,7 @@ paletted_height = int(height / 16)
 initial = 0x00
 layout = []
 palettes = []
-chr_tiles = [
-	[
-		'00000000',
-		'00000000',
-		'00000000',
-		'00000000',
-		'00000000',
-		'00000000',
-		'00000000',
-		'00000000',
-	],
-	[
-		'11111111',
-		'11111111',
-		'11111111',
-		'11111111',
-		'11111111',
-		'11111111',
-		'11111111',
-		'11111111',
-	],
-	[
-		'22222222',
-		'22222222',
-		'22222222',
-		'22222222',
-		'22222222',
-		'22222222',
-		'22222222',
-		'22222222',
-	],
-	[
-		'33333333',
-		'33333333',
-		'33333333',
-		'33333333',
-		'33333333',
-		'33333333',
-		'33333333',
-		'33333333',
-	],
-]
+chr_tiles = reserved_tiles
 
 for row in range(int(height / 8)):
 	for column in range(int(width / 8)):

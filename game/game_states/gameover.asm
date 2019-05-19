@@ -6,14 +6,13 @@ gameover_palettes_data:
 
 gameover_nametable_data:
 .byt ZIPNT_ZEROS(32*7)
-.byt ZIPNT_ZEROS(32*7+12)
-.byt                                                                $01, $01, $01, $01,  $01
-.byt ZIPNT_ZEROS(15+12)
-.byt                                                                $01, $01, $01, $01,  $01
-.byt ZIPNT_ZEROS(15+12)
+.byt ZIPNT_ZEROS(32*7)
+.byt ZIPNT_ZEROS(32+10)
+.byt                                                     $01, $02,  $03, $04, $05, $06,  $07, $08, $09, $0a,  $0b
+.byt ZIPNT_ZEROS(11+18)
 ;    -------------------  -------------------  -------------------  -------------------  -------------------  -------------------  -------------------  -------------------
-.byt                                                                $01, $01, $01, $01,  $01
-.byt ZIPNT_ZEROS(15+32*7)
+.byt                                                                                               $0c
+.byt ZIPNT_ZEROS(13+32*7)
 .byt ZIPNT_ZEROS(32*6)
 gameover_nametable_attributes:
 .byt ZIPNT_ZEROS(8*8)
