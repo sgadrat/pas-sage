@@ -5,7 +5,7 @@
 ;  tools/generate_bg_data.py tilemap assets/gameover_tiles.json assets/dummy_bg.gif > game/game_states/bg_data.asm
 ;  tools/generate_bg_data.py tiles assets/gameover_tiles.json assets/dummy_bg.gif > game/chr_rom_bg.asm
 ;  tools/generate_bg_data.py palettes assets/gameover_tiles.json assets/dummy_bg.gif > game/game_states/bg_palettes.asm
-;  xa nine.asm -C -o game\(E\).nes
+;  xa nine.asm -C -o pas-sage\(E\).nes
 
 ; iNES header
 
