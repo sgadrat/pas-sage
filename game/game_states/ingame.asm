@@ -94,7 +94,7 @@ ingame_init:
 	sta main_char_anim_state+ANIMATION_STATE_OFFSET_Y_LSB
 	lda #10
 	sta main_char_anim_state+ANIMATION_STATE_OFFSET_FIRST_SPRITE_NUM
-	lda #20
+	lda #62
 	sta main_char_anim_state+ANIMATION_STATE_OFFSET_LAST_SPRITE_NUM
 
 	; Initialize main character state

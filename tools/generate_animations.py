@@ -13,19 +13,21 @@ with open(sys.argv[2], 'r') as index_file:
 
 asset_path = os.path.abspath(os.path.dirname(sys.argv[2]))
 
+fully_transparent_tile = [
+	'00000000',
+	'00000000',
+	'00000000',
+	'00000000',
+	'00000000',
+	'00000000',
+	'00000000',
+	'00000000',
+]
+
 initial = 0x00
 anims = []
 chr_tiles = [
-	[
-		'00000000',
-		'00000000',
-		'00000000',
-		'00000000',
-		'00000000',
-		'00000000',
-		'00000000',
-		'00000000',
-	],
+	fully_transparent_tile,
 	[
 		'11111111',
 		'11111111',
@@ -85,14 +87,15 @@ for anim_index in animations_index:
 						line_str = '%s%d' % (line_str, img.getpixel((column*8+x, row*8+y)) % 4)
 					tile.append(line_str)
 
-				index = None
-				if tile in chr_tiles:
-					index = chr_tiles.index(tile)
-				else:
-					index = len(chr_tiles)
-					chr_tiles.append(tile)
+				if tile != fully_transparent_tile:
+					index = None
+					if tile in chr_tiles:
+						index = chr_tiles.index(tile)
+					else:
+						index = len(chr_tiles)
+						chr_tiles.append(tile)
 
-				frame.sprites.append(Sprite(y=row*8-anchor['y'], tile='${:02x}'.format(index), attr=0, x=column*8-anchor['x'], foreground=False))
+					frame.sprites.append(Sprite(y=row*8-anchor['y'], tile='${:02x}'.format(index), attr=0, x=column*8-anchor['x'], foreground=False))
 
 		anim.frames.append(frame)
 

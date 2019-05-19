@@ -4,6 +4,10 @@
 		"name": "become_child"
 	},
 	{
+		"pos": 500,
+		"name": "become_adult"
+	},
+	{
 		"pos": 767,
 		"name": "end_scroll"
 	}

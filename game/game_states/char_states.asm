@@ -7,6 +7,10 @@ main_char_states_anims_lsb:
 	.byt <anim_child_walk
 	.byt <anim_child_idle
 	.byt <anim_child_walk
+	.byt <anim_adult_idle
+	.byt <anim_adult_walk
+	.byt <anim_adult_idle
+	.byt <anim_adult_walk
 
 main_char_states_anims_msb:
 	.byt >anim_baby_idle
@@ -17,8 +21,16 @@ main_char_states_anims_msb:
 	.byt >anim_child_walk
 	.byt >anim_child_idle
 	.byt >anim_child_walk
+	.byt >anim_adult_idle
+	.byt >anim_adult_walk
+	.byt >anim_adult_idle
+	.byt >anim_adult_walk
 
 main_char_state_anims_direction:
+	.byt 0
+	.byt 0
+	.byt 1
+	.byt 1
 	.byt 0
 	.byt 0
 	.byt 1

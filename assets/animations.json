@@ -66,5 +66,49 @@
 				"file": "anim_dummy/child_walk_01.gif"
 			}
 		]
+	},
+	{
+		"name": "adult_walk",
+		"anchor": {"x": 27, "y": 63},
+		"frames": [
+			{
+				"duration": 8,
+				"file": "animation_frames/adult_walk1.gif"
+			},
+			{
+				"duration": 8,
+				"file": "animation_frames/adult_walk2.gif"
+			},
+			{
+				"duration": 8,
+				"file": "animation_frames/adult_walk3.gif"
+			},
+			{
+				"duration": 8,
+				"file": "animation_frames/adult_walk4.gif"
+			},
+			{
+				"duration": 8,
+				"file": "animation_frames/adult_walk5.gif"
+			},
+			{
+				"duration": 8,
+				"file": "animation_frames/adult_walk6.gif"
+			},
+			{
+				"duration": 8,
+				"file": "animation_frames/adult_walk7.gif"
+			}
+		]
+	},
+	{
+		"name": "adult_idle",
+		"anchor": {"x": 27, "y": 63},
+		"frames": [
+			{
+				"duration": 8,
+				"file": "animation_frames/adult_idle.gif"
+			}
+		]
 	}
 ]
